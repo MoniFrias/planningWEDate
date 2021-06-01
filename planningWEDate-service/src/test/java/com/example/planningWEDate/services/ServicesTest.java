@@ -61,34 +61,34 @@ class ServicesTest {
 	}
 	
 	@Test
-	public void test() {
-		ReflectionTestUtils.invokeMethod(services, "setWeekEndingDate", LocalDate.parse("2021-05-31"));
+	public void testTodayDayMonday() {
+		assertEquals(LocalDate.parse("2021-06-05"), ReflectionTestUtils.invokeMethod(services, "setWeekEndingDate", LocalDate.parse("2021-05-31")));
 	}
 	
 	@Test
-	public void test2() {
+	public void testTodayDayTuesday() {
 		assertEquals(LocalDate.parse("2021-06-05"), ReflectionTestUtils.invokeMethod(services, "setWeekEndingDate", LocalDate.parse("2021-06-01")));
 	}
 	@Test
-	public void test3() {
+	public void testTodayDayWednesday() {
 		assertEquals(LocalDate.parse("2021-06-05"),ReflectionTestUtils.invokeMethod(services, "setWeekEndingDate", LocalDate.parse("2021-06-02")));
 	}
 	@Test
-	public void test4() {
+	public void testTodayDayThursday() {
 		assertEquals(LocalDate.parse("2021-06-05"),ReflectionTestUtils.invokeMethod(services, "setWeekEndingDate", LocalDate.parse("2021-06-03")));
 	}
 	@Test
-	public void test5() {
+	public void testTodayDayFriday() {
 		assertEquals(LocalDate.parse("2021-06-05"),ReflectionTestUtils.invokeMethod(services, "setWeekEndingDate", LocalDate.parse("2021-06-04")));
 	}
 	
 	@Test
-	public void test6() {
+	public void testTodayDaySaturday() {
 		assertEquals(LocalDate.parse("2021-06-05"),ReflectionTestUtils.invokeMethod(services, "setWeekEndingDate", LocalDate.parse("2021-06-05")));
 	}
 	
 	@Test
-	public void test7() {
+	public void testTodayDaySunday() {
 		assertEquals(LocalDate.parse("2021-06-12"),ReflectionTestUtils.invokeMethod(services, "setWeekEndingDate", LocalDate.parse("2021-06-06")));
 	}
 	
