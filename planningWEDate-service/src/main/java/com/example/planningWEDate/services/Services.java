@@ -12,30 +12,34 @@ import com.example.planningWEDate.entity.WEDateBeforeTodayException;
 @Service
 public class Services {
 
+
 	public Response saveLoad(LocalDate dateWe) {
 		Response response = new Response();
+		DateWE weekEndingDate = new DateWE();
 		if(dateWe.isAfter(LocalDate.now())|| dateWe.isEqual(LocalDate.now()) ) {
 			int currentDay = DayOfWeek.from(dateWe).getValue();
 			if(currentDay == 6) {
-				LocalDate PublishedWEDate = dateWe;
-				response.setData(PublishedWEDate);
+				weekEndingDate.setWeekEndingDate(dateWe);
+				response.setData(weekEndingDate);
 				return response;
 			}
 			throw new WEDateBeforeTodayException();
 		}
 		throw new WEDateBeforeTodayException();
 	}
+
 	
 	public Response saveSchedule(LocalDate dateWe) {
 		Response response = new Response();
+		DateWE weekEndingDate = new DateWE();
 		LocalDate currentDay = LocalDate.now();
 		int day = DayOfWeek.from(dateWe).getValue();
 		if(dateWe.isAfter(currentDay)|| dateWe.isEqual(currentDay) ) {
 			LocalDate saturdayCurrentWeek = setWeekEndingDate(currentDay);
 			if(day == 6) {
 				if(!saturdayCurrentWeek.equals(dateWe)) {
-					LocalDate PublishedWEDate = dateWe;
-					response.setData(PublishedWEDate);
+					weekEndingDate.setWeekEndingDate(dateWe);
+					response.setData(weekEndingDate);
 					return response;
 				}
 				throw new WEDateBeforeTodayException();
