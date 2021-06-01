@@ -21,9 +21,15 @@ public class Controller {
 	@Autowired
 	Services services;
 
-	@PostMapping(path = "/save")
-	public ResponseEntity<Response> save (@RequestParam(name =  "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date){
-		Response response = services.save(date);
+	@PostMapping(path = "/saveLoad")
+	public ResponseEntity<Response> saveLoad (@RequestParam(name =  "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date){
+		Response response = services.saveLoad(date);
+		return new ResponseEntity<>(response,HttpStatus.OK);
+	}
+	
+	@PostMapping(path = "/saveSchedule")
+	public ResponseEntity<Response> saveSchedule (@RequestParam(name =  "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date){
+		Response response = services.saveSchedule(date);
 		return new ResponseEntity<>(response,HttpStatus.OK);
 	}
 	

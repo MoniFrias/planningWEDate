@@ -12,35 +12,57 @@ import com.example.planningWEDate.entity.WEDateBeforeTodayException;
 @Service
 public class Services {
 
-	public Response save(LocalDate dateWe) {
+	public Response saveLoad(LocalDate dateWe) {
 		Response response = new Response();
 		if(dateWe.isAfter(LocalDate.now())|| dateWe.isEqual(LocalDate.now()) ) {
-			LocalDate PublishedWEDate = setWeekEndingDate(dateWe.minusDays(7));
-			response.setData(PublishedWEDate);
-			return response;
+			int currentDay = DayOfWeek.from(dateWe).getValue();
+			if(currentDay == 6) {
+				LocalDate PublishedWEDate = dateWe;
+				response.setData(PublishedWEDate);
+				return response;
+			}
+			throw new WEDateBeforeTodayException();
 		}
 		throw new WEDateBeforeTodayException();
 	}
 	
+	public Response saveSchedule(LocalDate dateWe) {
+		Response response = new Response();
+		LocalDate currentDay = LocalDate.now();
+		int day = DayOfWeek.from(dateWe).getValue();
+		if(dateWe.isAfter(currentDay)|| dateWe.isEqual(currentDay) ) {
+			LocalDate saturdayCurrentWeek = setWeekEndingDate(currentDay);
+			if(day == 6) {
+				if(!saturdayCurrentWeek.equals(dateWe)) {
+					LocalDate PublishedWEDate = dateWe;
+					response.setData(PublishedWEDate);
+					return response;
+				}
+				throw new WEDateBeforeTodayException();
+			}
+			throw new WEDateBeforeTodayException();
+		}
+		throw new WEDateBeforeTodayException();
+	}
 	
 	private LocalDate setWeekEndingDate(LocalDate date) {
 		int currentDay = DayOfWeek.from(date).getValue();
 		System.out.println(currentDay);
 		
 		if(currentDay == 1) {
-			return date.plusDays(19);
+			return date.plusDays(5);
 		}else if(currentDay == 2) {
-			return date.plusDays(18);
+			return date.plusDays(4);
 		}else if(currentDay == 3) {
-			return date.plusDays(17);
+			return date.plusDays(3);
 		}else if(currentDay == 4) {
-			return date.plusDays(16);
+			return date.plusDays(2);
 		}else if(currentDay == 5) {
-			return date.plusDays(22);
-		}else if(currentDay == 6) {
-			return date.plusDays(7);
+			return date.plusDays(1);
+		}else if(currentDay == 7) {
+			return date.plusDays(6);
 		}
-		return date.plusDays(20);
+		return date;
 	}
 
 

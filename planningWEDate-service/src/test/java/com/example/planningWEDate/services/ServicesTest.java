@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import com.example.planningWEDate.entity.WEDateBeforeTodayException;
 
@@ -18,51 +19,78 @@ class ServicesTest {
 	Services services;
 
 	@Test
-	public void testSave() {
+	public void testSaveLoad() {
+		LocalDate dateWe = LocalDate.parse("2021-06-01").plusDays(4);
+		assertTrue(services.saveLoad(dateWe).isResult());
+	}
+		
+	@Test
+	public void testSaveThrowCurrentDay() {
 		LocalDate dateWe = LocalDate.now();
-		assertTrue(services.save(dateWe).isResult());
-	}
-	
-	@Test
-	public void testSave1() {
-		LocalDate dateWe = LocalDate.now().plusDays(1);
-		assertTrue(services.save(dateWe).isResult());
-	}
-	
-	@Test
-	public void testSave2() {
-		LocalDate dateWe = LocalDate.now().plusDays(2);
-		assertTrue(services.save(dateWe).isResult());
-	}
-	
-	@Test
-	public void testSave3() {
-		LocalDate dateWe = LocalDate.now().plusDays(3);
-		assertTrue(services.save(dateWe).isResult());
-	}
-	
-	@Test
-	public void testSave4() {
-		LocalDate dateWe = LocalDate.now().plusDays(4);
-		assertTrue(services.save(dateWe).isResult());
-	}
-	
-	@Test
-	public void testSave5() {
-		LocalDate dateWe = LocalDate.now().plusDays(5);
-		assertTrue(services.save(dateWe).isResult());
-	}
-	
-	@Test
-	public void testSave6() {
-		LocalDate dateWe = LocalDate.now().plusDays(6);
-		assertTrue(services.save(dateWe).isResult());
+		assertThrows(WEDateBeforeTodayException.class, () -> services.saveLoad(dateWe));
 	}
 	
 	@Test
 	public void testSaveThrow() {
 		LocalDate dateWe = LocalDate.now().minusDays(5);
-		assertThrows(WEDateBeforeTodayException.class, () -> services.save(dateWe));
+		assertThrows(WEDateBeforeTodayException.class, () -> services.saveLoad(dateWe));
 	}
+	
+	@Test
+	public void testSaveSchedule() {
+		LocalDate dateWe = LocalDate.now().plusDays(11);
+		assertEquals("success",services.saveSchedule(dateWe).getMessage());
+	}
+	
+	@Test
+	public void testSaveScheduleThrowSaturdarCurrentWeek() {
+		LocalDate dateWe = LocalDate.now().plusDays(4);
+		assertThrows(WEDateBeforeTodayException.class, () -> services.saveSchedule(dateWe));
+	}	
+	
+	@Test
+	public void testSaveScheduleNow() {
+		LocalDate dateWe = LocalDate.now();
+		assertThrows(WEDateBeforeTodayException.class, () -> services.saveSchedule(dateWe));
+	}
+	
+	@Test
+	public void testSaveSchedulePast() {
+		LocalDate dateWe = LocalDate.now().minusDays(10);
+		assertThrows(WEDateBeforeTodayException.class, () -> services.saveSchedule(dateWe));
+	}
+	
+	@Test
+	public void test() {
+		ReflectionTestUtils.invokeMethod(services, "setWeekEndingDate", LocalDate.parse("2021-05-31"));
+	}
+	
+	@Test
+	public void test2() {
+		assertEquals(LocalDate.parse("2021-06-05"), ReflectionTestUtils.invokeMethod(services, "setWeekEndingDate", LocalDate.parse("2021-06-01")));
+	}
+	@Test
+	public void test3() {
+		assertEquals(LocalDate.parse("2021-06-05"),ReflectionTestUtils.invokeMethod(services, "setWeekEndingDate", LocalDate.parse("2021-06-02")));
+	}
+	@Test
+	public void test4() {
+		assertEquals(LocalDate.parse("2021-06-05"),ReflectionTestUtils.invokeMethod(services, "setWeekEndingDate", LocalDate.parse("2021-06-03")));
+	}
+	@Test
+	public void test5() {
+		assertEquals(LocalDate.parse("2021-06-05"),ReflectionTestUtils.invokeMethod(services, "setWeekEndingDate", LocalDate.parse("2021-06-04")));
+	}
+	
+	@Test
+	public void test6() {
+		assertEquals(LocalDate.parse("2021-06-05"),ReflectionTestUtils.invokeMethod(services, "setWeekEndingDate", LocalDate.parse("2021-06-05")));
+	}
+	
+	@Test
+	public void test7() {
+		assertEquals(LocalDate.parse("2021-06-12"),ReflectionTestUtils.invokeMethod(services, "setWeekEndingDate", LocalDate.parse("2021-06-06")));
+	}
+	
 
 }

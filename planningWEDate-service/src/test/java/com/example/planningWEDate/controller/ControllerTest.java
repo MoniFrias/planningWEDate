@@ -22,9 +22,15 @@ class ControllerTest {
 	Services service;
 	
 	@Test
-	public void testSave() {
+	public void testSaveLoad() {
 		LocalDate date = null;
-		assertEquals(HttpStatus.OK, controller.save(date).getStatusCode());
+		assertEquals(HttpStatus.OK, controller.saveLoad(date).getStatusCode());
+	}
+	
+	@Test
+	public void testSaveSchedule() {
+		LocalDate date = null;
+		assertEquals(HttpStatus.OK, controller.saveSchedule(date).getStatusCode());
 	}
 
 }
