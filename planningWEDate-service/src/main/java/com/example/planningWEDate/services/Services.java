@@ -16,16 +16,18 @@ public class Services {
 	public Response saveLoad(LocalDate dateWe) {
 		Response response = new Response();
 		DateWE weekEndingDate = new DateWE();
-		if(dateWe.isAfter(LocalDate.now())|| dateWe.isEqual(LocalDate.now()) ) {
+		if(dateWe.isAfter(LocalDate.now())|| dateWe.isEqual(LocalDate.now())) {
 			int currentDay = DayOfWeek.from(dateWe).getValue();
 			if(currentDay == 6) {
 				weekEndingDate.setWeekEndingDate(dateWe);
 				response.setData(weekEndingDate);
 				return response;
+			}else {
+				throw new WEDateBeforeTodayException();
 			}
+		}else {
 			throw new WEDateBeforeTodayException();
 		}
-		throw new WEDateBeforeTodayException();
 	}
 
 	
@@ -41,12 +43,15 @@ public class Services {
 					weekEndingDate.setWeekEndingDate(dateWe);
 					response.setData(weekEndingDate);
 					return response;
+				}else {
+					throw new WEDateBeforeTodayException();
 				}
+			}else {
 				throw new WEDateBeforeTodayException();
 			}
+		}else {
 			throw new WEDateBeforeTodayException();
 		}
-		throw new WEDateBeforeTodayException();
 	}
 	
 	private LocalDate setWeekEndingDate(LocalDate date) {

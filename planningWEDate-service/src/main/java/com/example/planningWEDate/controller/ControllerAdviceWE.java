@@ -17,5 +17,4 @@ public class ControllerAdviceWE {
 		return new ResponseEntity<Response>(response  , HttpStatus.BAD_REQUEST);
 	}
 	
-
 }

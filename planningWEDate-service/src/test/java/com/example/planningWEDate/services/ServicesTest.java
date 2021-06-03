@@ -9,7 +9,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
-
 import com.example.planningWEDate.entity.WEDateBeforeTodayException;
 
 @ExtendWith(MockitoExtension.class)
@@ -20,7 +19,7 @@ class ServicesTest {
 
 	@Test
 	public void testSaveLoad() {
-		LocalDate dateWe = LocalDate.parse("2021-06-01").plusDays(4);
+		LocalDate dateWe = LocalDate.parse("2089-06-11");
 		assertTrue(services.saveLoad(dateWe).isResult());
 	}
 		
@@ -31,20 +30,20 @@ class ServicesTest {
 	}
 	
 	@Test
-	public void testSaveThrow() {
+	public void testSaveThrowPassDate() {
 		LocalDate dateWe = LocalDate.now().minusDays(5);
 		assertThrows(WEDateBeforeTodayException.class, () -> services.saveLoad(dateWe));
 	}
 	
 	@Test
 	public void testSaveSchedule() {
-		LocalDate dateWe = LocalDate.now().plusDays(11);
+		LocalDate dateWe = LocalDate.parse("2089-06-11");
 		assertEquals("success",services.saveSchedule(dateWe).getMessage());
 	}
 	
 	@Test
 	public void testSaveScheduleThrowSaturdarCurrentWeek() {
-		LocalDate dateWe = LocalDate.now().plusDays(4);
+		LocalDate dateWe = LocalDate.now().plusDays(2);
 		assertThrows(WEDateBeforeTodayException.class, () -> services.saveSchedule(dateWe));
 	}	
 	
@@ -92,5 +91,8 @@ class ServicesTest {
 		assertEquals(LocalDate.parse("2021-06-12"),ReflectionTestUtils.invokeMethod(services, "setWeekEndingDate", LocalDate.parse("2021-06-06")));
 	}
 	
+
+
+
 
 }
